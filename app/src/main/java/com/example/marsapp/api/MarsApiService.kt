@@ -12,16 +12,4 @@ interface MarsApiService {
 
     @GET("realestate?filter=all")
     suspend fun getProperties(): List<MarsResponseItem>
-
-
-    companion object {
-
-        fun create(): MarsApiService {
-            val retrofit = Retrofit.Builder()
-                .baseUrl(Consts.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-            return retrofit.create(MarsApiService::class.java)
-        }
-    }
 }

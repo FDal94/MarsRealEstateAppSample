@@ -16,22 +16,22 @@ import com.example.marsapp.data.MarsResponseItem
 
 import com.example.marsapp.repo.MarsPropertyRepostory
 import com.example.marsapp.view.adapters.MarsPropertyAdapter
+import dagger.hilt.android.AndroidEntryPoint
+import retrofit2.Retrofit
+import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var  viewModel: MainViewModel
+   // private lateinit var  viewModel: MainViewModel
     private lateinit var recyclerView: RecyclerView
 
+    private val viewModel by viewModels<MainViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val marsApiService = MarsApiService.create()
-        val marsPropertyRepostory = MarsPropertyRepostory(this, marsApiService)
-        val viewModelFactory = MarsViewModelFactory( marsPropertyRepostory)
-        viewModel = ViewModelProvider(this,viewModelFactory)[MainViewModel::class.java]
 
 
         recyclerView = findViewById(R.id.recycler_view)

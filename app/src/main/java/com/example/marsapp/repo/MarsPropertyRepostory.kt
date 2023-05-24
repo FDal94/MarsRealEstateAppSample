@@ -14,39 +14,28 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 
 
-class MarsPropertyRepostory(private val context: Context, private val marsApiService: MarsApiService){
-
-
-    private lateinit var marsPropertyDao: MarsPropertyDao
-
-    init {
-
-        val marsPropertyDatabase = Room.databaseBuilder(
-            context.applicationContext,
-            MarsPropertyDatabase::class.java,
-            "name_property_database"
-        ).build()
-
-        marsPropertyDao = marsPropertyDatabase.marsPropertyDao()
-    }
-
-
-
-    fun insertProperties(properties : List<MarsResponseItem>) {
-        marsPropertyDao.insertPropertiesToRoomDb(properties)
-
-    }
-
+class MarsPropertyRepostory(
+    private val context: Context,
+    private val remoteDataSource: MarsRemoteDataSource,
+    private val localDataSource: MarsLocalDataSource){
 
     fun  getAllProperties(): Flow<List<MarsResponseItem>> = flow{
         if(NetworkUtil.isNetworkConnected(context)){
-            val propertiesFromApi = marsApiService.getProperties()
-            insertProperties(propertiesFromApi)
+            val propertiesFromApi = remoteDataSource.getProperties()
+            localDataSource.insertProperties(propertiesFromApi)
             emit(propertiesFromApi)
         }else{
-            emit(marsPropertyDao.getAllPropertiesFromRoomDb())
+            emit(localDataSource.getAllPropertiesFromRoomDb())
         }
     }.flowOn(Dispatchers.IO)
+
+
+
+
+
+
+
+
 
 
 

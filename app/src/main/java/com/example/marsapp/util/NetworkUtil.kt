@@ -4,9 +4,10 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
+import dagger.hilt.android.qualifiers.ApplicationContext
 
 object NetworkUtil {
-    fun isNetworkConnected(context: Context): Boolean {
+    fun isNetworkConnected( context: Context): Boolean {
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetwork: Network? = connectivityManager.activeNetwork
